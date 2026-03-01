@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from app.models.order import OrderStatus
-
+from datetime import datetime
 
 class CreateOrderRequest(BaseModel):
     description: str
@@ -17,7 +17,7 @@ class OrderResponse(BaseModel):
     failed_reason: str | None = None
     digital_signature_url: str | None = None
     pod_image_url: str | None = None
-    created_at: str
+    created_at: datetime
 
 
     class Config:

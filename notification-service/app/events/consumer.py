@@ -9,7 +9,10 @@ logger = logging.getLogger(__name__)
 
 QUEUE_BINDINGS = {
     "notification.ros.route_assigned.queue": "ros.route_assigned",
+    "notification.wms.registered.queue": "wms.registered",
+    "notification.route.driver_unavailable.queue": "route.driver_unavailable",
     "notification.order.delivered.queue": "order.delivered",
+    "notification.order.failed.queue": "order.failed",
 }
 
 

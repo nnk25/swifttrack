@@ -267,19 +267,20 @@
         </div>
         <button class="modal-close" onclick="closeModal('pod-modal')">✕</button>
       </div>
-      <div class="field"><label>Recipient Name</label><input id="pod-name" type="text"
-          placeholder="Person who received the package"></div>
+      <!-- <div class="field"><label>Recipient Name</label><input id="pod-name" type="text"
+          placeholder="Person who received the package"></div> -->
       <div class="field">
         <label>Digital Signature</label>
-        <div class="sig-wrap" id="sig-wrap">
-          <span class="sig-hint" id="sig-hint">✍️ Draw signature here</span>
-          <canvas id="sig-canvas"></canvas>
-        </div>
-        <button class="btn btn-ghost btn-sm" style="margin-top:6px" onclick="clearSig()">Clear</button>
+        <!-- handlesigupload should upload the image to a hosting service and get the url and set it as that hidden inputs value-->
+          <input type="file" accept="image/*" id="sig-input" onchange="handleSigUpload(event)">
+          <input type="hidden" id="sig-url" value="">
       </div>
-      <div class="field"><label>Notes (optional)</label><input id="pod-notes" type="text"
-          placeholder="e.g. Left with receptionist, unit 2B"></div>
-      <div class="btn-row">
+      <div class="field">
+        <label>Proof of Delivery Image</label>
+          <input type="file" accept="image/*" id="pod-image-input" onchange="handlePodImageUpload(event)">
+          <input type="hidden" id="pod-image-url" value="">
+      </div>
+    
         <button class="btn btn-ghost" onclick="closeModal('pod-modal')">Cancel</button>
         <button class="btn btn-green" id="pod-btn" onclick="confirmDeliver()">✓ Confirm Delivered</button>
       </div>

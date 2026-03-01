@@ -124,6 +124,10 @@
     function doLogout() {
       if (S.ws) { S.ws.close(); S.ws = null; }
       Object.assign(S, { token: null, userId: null, username: null, role: null, orders: [], notifCount: 0 });
+      localStorage.removeItem('jwt_token');
+      localStorage.removeItem('username');
+      localStorage.removeItem('role');
+      localStorage.removeItem('userId');
       // Reset UI
       document.getElementById('orders-body').innerHTML = '<tr><td colspan="5"><div class="empty"><div class="empty-icon">📦</div>Loading…</div></td></tr>';
       document.getElementById('client-notifs').innerHTML = '<div class="notif-empty">Events from the order pipeline will appear here in real-time via WebSocket.</div>';
@@ -441,21 +445,22 @@
     function openPOD(id) {
       S.podId = id;
       const o = S.orders.find(x => x.id === id);
-      document.getElementById('pod-sub').textContent = o ? o.destination : id;
-      document.getElementById('pod-name').value = '';
-      document.getElementById('pod-notes').value = '';
-      clearSig();
+ 
       openModal('pod-modal');
     }
 
     async function confirmDeliver() {
       const btn = document.getElementById('pod-btn');
-      const name = v('pod-name');
-      if (!name) { toast('Enter recipient name', 'error'); return; }
+      const sigUrl = v('sig-url');
+      const podUrl = v('pod-image-url');
+      let body = {
+        digital_signature_url: sigUrl || null,
+        pod_image_url: podUrl || null
+      }
       setBtn(btn, true, 'Confirming…');
       try {
         // POST /api/v1/drivers/{driver_id}/deliveries/{order_id}/complete
-        await req(CFG.ORDER, `/api/v1/drivers/${S.userId}/deliveries/${S.podId}/complete`, 'POST');
+        await req(CFG.ORDER, `/api/v1/drivers/${S.userId}/deliveries/${S.podId}/complete`, 'POST', body=body);
         // Backend will publish order.delivered → WS → auto-refresh
         // Also update locally immediately
         upsertOrder({ ...S.orders.find(o => o.id === S.podId), status: 'DELIVERED' });
@@ -561,7 +566,7 @@
     // ─── INIT ───
     document.addEventListener('DOMContentLoaded', () => {
       show('login-screen');
-      initSig();
+      // initSig();
 
       // Enter key support
       ['l-user', 'l-pass'].forEach(id => {
