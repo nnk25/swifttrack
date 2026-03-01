@@ -40,6 +40,7 @@ async def handle_message(message: aio_pika.IncomingMessage, routing_key: str):
 
                 if routing_key == "cms.confirmed" and body.get("failed"):
                     order.status = OrderStatus.FAILED
+                    order.failed_reason = "CMS rejected the order"
                     await db.commit()
                     logger.warning(f"Order {order_id} marked FAILED — CMS rejected")
                     from app.events.publisher import publish_event
