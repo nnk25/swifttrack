@@ -58,7 +58,7 @@ async def handle_message(message: aio_pika.IncomingMessage, exchange: aio_pika.E
 
 
 async def main():
-    await asyncio.sleep(10)
+    await asyncio.sleep(5)
     logger.info("ROS Adapter connecting to RabbitMQ...")
     connection = await aio_pika.connect_robust(settings.RABBITMQ_URL)
     channel = await connection.channel()

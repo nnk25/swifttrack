@@ -60,7 +60,7 @@ async def handle_compensate(message: aio_pika.IncomingMessage):
 
 
 async def main():
-    await asyncio.sleep(10)
+    await asyncio.sleep(5)
     logger.info("WMS Adapter connecting to RabbitMQ...")
     connection = await aio_pika.connect_robust(settings.RABBITMQ_URL)
     channel = await connection.channel()

@@ -28,7 +28,7 @@ async def handle_message(message: aio_pika.IncomingMessage, routing_key: str):
 
 
 async def start_consumer():
-    await asyncio.sleep(8)
+    await asyncio.sleep(5)
     logger.info("Notification service connecting to RabbitMQ...")
     connection = await aio_pika.connect_robust(settings.RABBITMQ_URL)
     channel = await connection.channel()
